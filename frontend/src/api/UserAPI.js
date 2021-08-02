@@ -31,7 +31,7 @@ const getLoggedInUser = (token) => {
 };
 
 const getListByID = async (listID, token) => {
-    const response = await fetch(`${BASE_URL}lists/${listID}`, {
+    const response = await fetch(`${BASE_URL}lists/${listID}/`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -43,10 +43,12 @@ const getListByID = async (listID, token) => {
 }
 
 const getTasksByIDs = async (arrOfIDs, token) => {
+    if (!arrOfIDs) return;
+
     let arrToReturn = [];
 
     for (const taskID of arrOfIDs) {
-        const response = await fetch(`${BASE_URL}tasks/${taskID}`, {
+        const response = await fetch(`${BASE_URL}tasks/${taskID}/`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -60,6 +62,66 @@ const getTasksByIDs = async (arrOfIDs, token) => {
     return arrToReturn;
 }
 
+const markTaskAsCompleted = async (taskObj, token) => {
+    const taskID = taskObj.id;
+    const updatedTaskObj = {
+        id: taskID,
+        task_name: taskObj.task_name,
+        completed: true,
+        due_date: taskObj.due_date,
+        list: taskObj.list
+    }
 
-export { login, getLoggedInUser, signupUser, getListByID, getTasksByIDs }
+    const response = await fetch(`${BASE_URL}tasks/${taskID}/`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `JWT ${token}`
+        },
+        body: JSON.stringify(updatedTaskObj)
+    })
+
+    const data = await response.json();
+    return data;
+}
+
+const createNewTask = async (newTodoObj, token) => {
+    const response = await fetch(`${BASE_URL}tasks/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `JWT ${token}`
+        },
+        body: JSON.stringify(newTodoObj)
+    })
+    const data = await response.json();
+    return data;
+}
+
+const editTask = async (editedTodoObj, token) => {
+    const response = await fetch(`${BASE_URL}tasks/${editedTodoObj.id}/`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `JWT ${token}`
+        },
+        body: JSON.stringify(editedTodoObj)
+    })
+    const data = await response.json();
+    return data;
+}
+
+const deleteTask = async (taskID, token) => {
+    const response = await fetch(`${BASE_URL}tasks/${taskID}/`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `JWT ${token}`
+        }
+    })
+    const data = await response.json();
+    return data;
+}
+
+export { login, getLoggedInUser, signupUser, getListByID, getTasksByIDs, markTaskAsCompleted, createNewTask, editTask, deleteTask }
 

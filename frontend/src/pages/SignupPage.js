@@ -12,7 +12,7 @@ const SignupPage = (props) => {
         let response = await signupUser(userObject);
         let data = await response.json();
         if (data.error) {
-            console.log('there was an error signing up');
+            console.error('there was an error signing up');
         } else {
             history.push('/login');
         }

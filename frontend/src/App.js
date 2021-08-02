@@ -1,14 +1,24 @@
+// React stuff & other libraries
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
+
+// Pages
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
-import Lists from './components/Lists/Lists';
 import ListPage from './pages/ListPage';
+import NewTodoPage from './pages/NewTodoPage';
+import EditTodoPage from './pages/EditTodoPage';
+
+// Components
+import Lists from './components/Lists/Lists';
 import NavigationBar from './components/Navbar/Navbar';
+
+// Other
 import { getLoggedInUser, login, getListByID } from './api/UserAPI';
-import UserContext from "./contexts/UserContext"
+import UserContext from "./contexts/UserContext";
+
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -79,6 +89,8 @@ function App() {
                     <Route exact path="/" render={renderHomePage} />
                     <Route exact path="/lists" component={Lists} />
                     <Route exact path="/lists/:listID" component={ListPage} />
+                    <Route exact path="/lists/:listID/new" component={NewTodoPage} />
+                    <Route exact path="/lists/:listID/tasks/:taskID/edit" component={EditTodoPage} />
                     <Route exact path="/login" render={renderLoginPage} />
                     <Route exact path="/signup" component={SignupPage} />
                 </UserContext.Provider>

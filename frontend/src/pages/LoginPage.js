@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import UserContext from "../contexts/UserContext";
 
 const Login = ({ isLoggedIn, handleLogout, handleLogin }) => {
+    const user = useContext(UserContext);
 
     if (isLoggedIn) {
         return <div>
-            <h1>You are logged in!</h1>
+            {user && <h1>You are logged in as: {user.username}</h1>}
             <div>
                 <Link to='/'>Home</Link>
             </div>
