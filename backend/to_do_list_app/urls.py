@@ -3,8 +3,8 @@ from rest_framework.routers import DefaultRouter
 from to_do_list_app.views import *
 
 router = DefaultRouter()
-router.register(r'task-lists', TaskListViewSet, basename='task-list')
-router.register(r'tasks', TaskViewSet, basename='task')
+router.register('task-lists', TaskListViewSet, basename='task-list')
+router.register('tasks', TaskViewSet, basename='task')
 
 urlpatterns = router.urls
 
